@@ -34,3 +34,7 @@ tree.export_graphviz(model,
                     feature_names=fn,
                     class_names=cn,
                     filled=True)
+                    
+                    
+                    
+                    cmd promt--->>dot -Tpng tree.dot > tree.png
