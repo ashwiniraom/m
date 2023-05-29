@@ -1,0 +1,34 @@
+import warnings
+warnings.filterwarnings('ignore')
+
+from pandas import read_csv
+from sklearn.model_selection import KFold
+from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import cross_val_predict
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import classification_report
+from sklearn.neighbors import KNeighborsClassifier
+
+df=read_csv('Heart.csv')
+array=df.values
+X=array[:,0:-1]
+Y=array[:,-1]
+kfold=KFold(n_splits=10,shuffle=True,random_state=0)
+
+from sklearn.preprocessing import StandardScaler
+scaler=StandardScaler().fit(X)
+x_scaled=scaler.transform(X)
+
+model=KNeighborsClassifier(n_neighbors=3)
+result=cross_val_score(model,x_scaled,Y,cv=kfold,scoring='accuracy')
+print("Accuracy={:.2f}%".format(result.mean()*100))
+y_pred=cross_val_predict(model,x_scaled,Y,cv=kfold)
+conf_mat=confusion_matrix(Y,y_pred)
+print('\n confusion matrix:\n',conf_mat)
+report=classification_report(Y,y_pred)
+print('\n classification report \n',report)
+
+
+model=model.fit(x_scaled,Y)
+y_pred=model.predict([[71,0,0,112,149,0,1,125,0,1.6,1,0,2]])
+print(y_pred)

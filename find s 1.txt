@@ -1,0 +1,32 @@
+import csv
+num_attributes=6
+a=[]
+
+with open('EnjoySport.csv','r') as csvfile:
+    reader=csv.reader(csvfile)
+    for row in reader:
+        a.append(row)
+a=a[1:]
+print("\n Given Training Data:\n")
+print(a)
+
+hypothesis=['0']*num_attributes
+print("\n The initil hypothesis:",hypothesis)
+
+
+for j in range(0,num_attributes):
+    hypothesis[j]=a[0][j];
+    print(hypothesis)
+    
+print("\n Find s: Finding a Maximally Specific Hypothesis:\n")
+    
+for i in range(0,len(a)):
+    if a[i][num_attributes]=='yes':
+        for j in range(0,num_attributes):
+            if a[i][j]!=hypothesis[j]:
+                hypothesis[j]='?'
+    print("For Training No",i,",the maximally specific Hypothesis is",hypothesis)
+
+print("\n The maximally specific for the given set of tarining examples is:\n");
+
+print(hypothesis)

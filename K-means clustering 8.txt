@@ -1,0 +1,28 @@
+
+from sklearn.datasets import make_blobs
+X,Y=make_blobs(n_samples=200,centers=3,n_features=2,random_state=0)
+
+import warnings
+warnings.filterwarnings('ignore')
+
+from matplotlib import pyplot
+pyplot.scatter(X[:,0],X[:,1],s=20)
+pyplot.show()
+
+ 
+
+from sklearn.cluster import KMeans
+model=KMeans(n_clusters=3).fit(X)
+
+Y_pred=model.predict(X)
+centroids=model.cluster_centers_
+pyplot.scatter(X[:,0],X[:,1],c=Y_pred,s=20,cmap='viridis')
+pyplot.scatter(centroids[:,0],centroids[:,1],c='black',s=200,alpha=0.5);
+pyplot.show()
+
+ 
+
+from sklearn.metrics import accuracy_score,confusion_matrix
+print("Accuracy of k-means:",accuracy_score(Y,Y_pred))
+print("Confusion matrix: \n",confusion_matrix(Y,Y_pred))
+

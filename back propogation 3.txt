@@ -1,0 +1,46 @@
+import warnings
+warnings.filterwarnings('ignore')
+
+from pandas import read_csv
+from sklearn.model_selection import KFold
+from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import cross_val_predict
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import classification_report
+from sklearn.neural_network import MLPClassifier
+
+
+df=read_csv('Raisin.csv')
+array=df.values
+X=array[:,0:-1]
+Y=array[:,-1]
+kfold=KFold(n_splits=10,shuffle=True,random_state=0)
+
+
+from sklearn.preprocessing import StandardScaler
+scaler=StandardScaler().fit(X)
+X_scaled=scaler.transform(X)
+
+model=MLPClassifier(hidden_layer_sizes=(10,9),shuffle=True,random_state=0,max_iter=500)
+result=cross_val_score(model,X_scaled,Y,cv=kfold,scoring='accuracy')
+print("accuracy={:.2f}%".format(result.mean()*100))
+Y_pred=cross_val_predict(model,X_scaled,Y,cv=kfold)
+conf_mat=confusion_matrix(Y,Y_pred)
+print('\n',conf_mat)
+report=classification_report(Y,Y_pred)
+print('\n',report)
+
+
+model=MLPClassifier(hidden_layer_sizes=(10,9),shuffle=True,random_state=0,max_iter=500)
+result=cross_val_score(model,X_scaled,Y,cv=kfold,scoring='accuracy')
+print("accuracy={:.2f}%".format(result.mean()*100))
+Y_pred=cross_val_predict(model,X_scaled,Y,cv=kfold)
+conf_mat=confusion_matrix(Y,Y_pred)
+print('\n',conf_mat)
+report=classification_report(Y,Y_pred)
+print('\n',report)
+
+
+model=model.fit(X,Y)
+Y_pred=model.predict([[55114,317.1723252,222.7534529,0.711870752,56849,0.714254241,909.604]])
+print(Y_pred)
